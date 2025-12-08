@@ -1,3 +1,15 @@
+# Unity project is inside "Cosmo Chef" folder
+Cosmo Chef/[Ll]ibrary/
+Cosmo Chef/[Tt]emp/
+Cosmo Chef/[Oo]bj/
+Cosmo Chef/[Bb]uild/
+Cosmo Chef/[Bb]uilds/
+Cosmo Chef/[Ll]ogs/
+Cosmo Chef/[Uu]ser[Ss]ettings/
+Cosmo Chef/[Mm]emoryCaptures/
+Cosmo Chef/[Rr]ecordings/
+
+
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
