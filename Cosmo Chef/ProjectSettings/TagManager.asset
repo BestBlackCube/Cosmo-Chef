@@ -11,13 +11,13 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Ground
+  - autoMove
+  - JumpPad
+  - copy
+  - TextBox
+  - Spike
   - 
   - 
   - 
