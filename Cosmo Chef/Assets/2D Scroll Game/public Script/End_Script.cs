@@ -1,23 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Data;
 
-public class End_Script : MonoBehaviour
+public class END_Script : MonoBehaviour
 {
-    bool end = false;
-    private void OnMouseOver()
+    float timer = 0f;
+    float Esc_timer = 0f;
+    [SerializeField] Image Esc_bar;
+    // Start is called before the first frame update
+    void Start()
     {
-        end = true;
+        
     }
-    private void OnMouseExit()
+
+    // Update is called once per frame
+    void Update()
     {
-        end = false;
-    }
-    private void OnMouseDown()
-    {
-        if (end == true)
+        if (timer < 10f) timer += Time.deltaTime;
+        else SceneManager.LoadScene("StartMenuScene");
+        if (Input.GetKey(KeyCode.Escape))
         {
-            Application.Quit();
+            Esc_timer += Time.deltaTime;
+            Esc_bar.fillAmount = Esc_timer / 3f;
+            if(Esc_timer > 3f)
+            {
+                SceneManager.LoadScene("StartMenuScene");
+            }
+        }
+        else
+        {
+            if(Esc_timer > 0f)
+            {
+                Esc_timer = 0f;
+                Esc_bar.fillAmount = 0f;
+            }
         }
     }
 }

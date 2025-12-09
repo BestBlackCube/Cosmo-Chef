@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 10620182588440407}
   - component: {fileID: 6727858339338603601}
-  - component: {fileID: 2500321332785915527}
+  - component: {fileID: 9212210279108128135}
   - component: {fileID: 7910417826143118647}
   m_Layer: 0
   m_Name: Food1_Object
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 6, y: 5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e250d79a240c2af489323def30452048, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 51425eabdfdb0ed468b3c015f3b2bce0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -86,8 +86,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &2500321332785915527
-BoxCollider2D:
+--- !u!60 &9212210279108128135
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -118,19 +118,41 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.1}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.16, y: 0.2}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.55714285, y: 0.9785714}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.2}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.10714286, y: 0.05357143}
+      - {x: 0.10714286, y: 0.10357143}
+      - {x: 0.19285715, y: 0.21785714}
+      - {x: 0.20714286, y: 0.29642856}
+      - {x: 0.2, y: 0.36785716}
+      - {x: 0.15714286, y: 0.43214285}
+      - {x: 0.042857144, y: 0.4892857}
+      - {x: -0.12857144, y: 0.4892857}
+      - {x: -0.19285715, y: 0.46071428}
+      - {x: -0.24285714, y: 0.39642859}
+      - {x: -0.2642857, y: 0.36785716}
+      - {x: -0.27857143, y: 0.31071427}
+      - {x: -0.27857143, y: 0.175}
+      - {x: -0.25, y: 0.11785714}
+      - {x: -0.071428575, y: 0.05357143}
+      - {x: 0, y: 0.046428572}
+      - {x: 0.16428572, y: -0.38214287}
+      - {x: 0.21428572, y: -0.475}
+      - {x: 0.2642857, y: -0.4892857}
+      - {x: 0.27857143, y: -0.48214287}
+      - {x: 0.27857143, y: -0.38214287}
+      - {x: 0.23571429, y: -0.275}
+  m_UseDelaunayMesh: 0
 --- !u!114 &7910417826143118647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +165,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7d62124ee6a66c4b86d1067740e0743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Food:
-  - {fileID: 4665163882995532280}
-  - {fileID: 0}
-  food_tory: {fileID: 0}

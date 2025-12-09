@@ -11,15 +11,15 @@ TagManager:
   - 
   - Water
   - UI
+  - PlayerCheck
   - Player
-  - Ground
-  - autoMove
-  - JumpPad
-  - copy
-  - TextBox
+  - PlayerJump
+  - 
+  - GroundCheck
+  - GroundTop
+  - GroundBottom
+  - 
   - Spike
-  - 
-  - 
   - 
   - 
   - 

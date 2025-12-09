@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/2D Scroll Game/Scenes/StartMenuScene.unity
     guid: e53b81cf9f1b7494aacaa1ae07608433
   - enabled: 1
-    path: Assets/2D Scroll Game/Scenes/ScrollScene.unity
+    path: Assets/2D Scroll Game/Scenes/InGameScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/2D Scroll Game/Scenes/EndingScene.unity
+    guid: 32bad599e7eb18f42bad571ab0afbfe4
   m_configObjects: {}
