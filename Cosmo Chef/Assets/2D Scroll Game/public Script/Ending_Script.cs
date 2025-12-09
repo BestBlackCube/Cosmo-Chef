@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Ending_Script : MonoBehaviour
 {
-    bool EndingDoor = false;
+    public bool EndingDoor = false;
     [SerializeField] FoodTory_Script foodtory;
     [SerializeField] BlackScreen_Script black;
 
@@ -32,7 +32,7 @@ public class Ending_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.UpArrow) && EndingDoor == true)
+        if(Input.GetKeyDown(KeyCode.Space) && EndingDoor == true)
         {
             foodtory.stage_Panel.SetActive(false);
             foodtory.Clear_timer = 0f;

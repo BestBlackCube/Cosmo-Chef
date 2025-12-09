@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Player_Script : MonoBehaviour
 {
     [SerializeField] FoodDrop_Script drop;
+    [SerializeField] Ending_Script door;
 
     [SerializeField] Rigidbody2D rigid2D;
     [SerializeField] CapsuleCollider2D topBox2D;
@@ -200,8 +201,11 @@ public class Player_Script : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space) && JumpStart == false)
             {
-                Jump = true;
-                this.gameObject.layer = LayerMask.NameToLayer("PlayerJump");
+                if(!door.EndingDoor == true)
+                {
+                    Jump = true;
+                    this.gameObject.layer = LayerMask.NameToLayer("PlayerJump");
+                }
             }
         }
     }
@@ -209,20 +213,12 @@ public class Player_Script : MonoBehaviour
     {
         if (Left == true)
         {
-            if (rigid2D.velocity.x < -5f)
-            {
-                rigid2D.velocity = new Vector2(-5f, rigid2D.velocity.y);
-            }
-            rigid2D.AddForce(Vector2.left * movePower);
+            rigid2D.velocity = new Vector2(-5f, rigid2D.velocity.y);
             Right = false;
         }
         if (Right == true)
         {
-            if (rigid2D.velocity.x > 5f)
-            {
-                rigid2D.velocity = new Vector2(5f, rigid2D.velocity.y);
-            }
-            rigid2D.AddForce(Vector2.right * movePower);
+            rigid2D.velocity = new Vector2(5f, rigid2D.velocity.y);
             Left = false;
         }
 

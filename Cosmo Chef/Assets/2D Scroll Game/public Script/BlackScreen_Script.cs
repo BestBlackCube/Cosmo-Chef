@@ -10,6 +10,7 @@ public class BlackScreen_Script : MonoBehaviour
 {
     [SerializeField] Image Black;
     [SerializeField] GameObject CountDown;
+    [SerializeField] GameObject KeyGuide;
     [SerializeField] FoodTory_Script foodtory;
     [SerializeField] Player_Script player;
 
@@ -102,6 +103,8 @@ public class BlackScreen_Script : MonoBehaviour
         if (Down == true)
         {
             CountDown.SetActive(true);
+            KeyGuide.SetActive(true);
+
             Color color = CountDown.GetComponent<TextMeshProUGUI>().color;
             if (color.a == 0f)
             {
@@ -124,6 +127,15 @@ public class BlackScreen_Script : MonoBehaviour
                     Down = false;
                 }
             }
+            if(foodtory.EndingCount == 0)
+            {
+                Color color2 = KeyGuide.GetComponent<SpriteRenderer>().color;
+                if (color2.a == 0f)
+                {
+                    color2.a = 1f;
+                    KeyGuide.GetComponent<SpriteRenderer>().color = color2;
+                }
+            }
         }
         else
         {
@@ -138,6 +150,12 @@ public class BlackScreen_Script : MonoBehaviour
                 Color color = CountDown.GetComponent<TextMeshProUGUI>().color;
                 color.a = Mathf.Lerp(1.0f, 0.0f, Textenabled_timer);
                 CountDown.GetComponent<TextMeshProUGUI>().color = color;
+                if (foodtory.EndingCount == 0)
+                {
+                    Color color2 = KeyGuide.GetComponent<SpriteRenderer>().color;
+                    color2.a = Mathf.Lerp(1.0f, 0.0f, Textenabled_timer);
+                    KeyGuide.GetComponent<SpriteRenderer>().color = color2;
+                }
             }
             else
             {
