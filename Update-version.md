@@ -1,3 +1,52 @@
+# Cosmos-Chef 클라이언트 개발 3.4.3v
+## 기능 설명
+시작 화면에 여러가지의 버튼 추가 및 기능 수정, 게임 배경음, 캐릭터 및 오브젝트 효과음 추가  
+오디오 조절이 가능한 페이지 추가, 스테이지 클리어 시간을 저장하는 Json파일 추가  
+클리어 타임 1~10위까지 확인이 가능한 페이지 추가
+
+- ## 스테이지 클리어 타임 기록
+   - ### [FoodTory_Script.cs](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/Player/FoodTory_Script.cs#L58-L141)
+      - PlayerPrefs를 사용하여 유니티 엔진 내부에 값을 남겨 게임이 종료되어도 클리어타임을 남깁니다.  
+         클리어 타임은 1-6스테이지를 전부 플레이 하고, 6스테이지를 클리어 후 클리어 타임이  
+         json파일에 기록됩니다.
+- ## 스테이지 클리어 목표 아이템
+   - ### [Food_Script.cs](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/public%20Script/Food_Script.cs#L59-L64)
+      - 아이템이 소환되면 5초동안 점멸을 하며, 5초안에 플레이어가 아이템을 수집 하지 못하면  
+      아이템은 사라집니다.
+- ## 오디오
+   - ### [SoundSetting_Script.cs](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/public%20Script/SoundSetting_Script.cs)
+      - void Start를 통해 배경음, 효과음 2가지의 Slider.value값을 PlayerPref 값으로 변환하여
+         처음 값을 받아옵니다.  
+
+         [MainSoundChange](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/public%20Script/SoundSetting_Script.cs#L65-L73), [InGameSoundChange](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/public%20Script/SoundSetting_Script.cs#L74-L82)를 통해 실시간으로 조절이 되는 fillAmount값을 대입하여  
+         0.0~1.0 * 100값으로 백분율로 나타낸다.
+   - ### [Sound_Script](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/public%20Script/Sound_Script.cs)
+      - AudioClip 배열을 만들어 인게임 효과음을 넣어 사용처에서 PlaySound 함수에 해당하는  
+      클립을 넣어 사용합니다.
+- ## 스테이지포탈
+   - ### [Ending_Script.cs](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/public%20Script/Ending_Script.cs#L48-L62)
+      - 스테이지 맵에 맞추어 포탈 위치를 변경
+- ## 시작화면 버튼
+   - ### [mainButton_Script.cs](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/public%20Script/mainButton_Script.cs)
+      - Start, Exit 버튼들을 하나로 합치고, 오디오 설정, 클리어타임 기록 보기 등 버튼들을 추가
+
+      - [RankButton](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/public%20Script/mainButton_Script.cs#L33-L72)를 클릭할 시 Json파일의 배열에 값이 있는 클리어 타임 값을 만약 없다면 Nodata로 표시
+      - [SettingButton](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/public%20Script/mainButton_Script.cs#L73-L76)를 클릭할 시 오디오 조절이 가능한 페이지가 켜지고, 꺼진다. (사운드 조절은 Sound_Script에서)
+
+## 버그 리포트
+   - ### 2.3.2v
+      - 플레이어 죽을 때 Animator 무한 반복 및 y값이 있어 튕기는 버그
+
+## 버전 표기법 (Semantic Versioning)
+```
+[주 버전].[부 버전].[수 버전]
+   0   .   0   .   0
+
+- 주 버전: 하위 호환성이 깨지는 변경
+- 부 버전: 하위 호환성 유지하며 기능 추가
+- 수 버전: 하위 호환성 유지하며 버그 수정
+```
+
 # Cosmos-Chef 클라이언트 개발 2.3.2v
 ## 기능 설명
 방해물 소환을 다음스테이지를 향해 갈 수록, 게임 난이도가 증가하는 시스템을 추가.  
