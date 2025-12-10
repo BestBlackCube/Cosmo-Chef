@@ -32,7 +32,7 @@ public class Player_Script : MonoBehaviour
     [SerializeField] int nowHp;
     [SerializeField] int MaxHp;
 
-    [SerializeField] float movePower = 20f;
+    //[SerializeField] float movePower = 20f;
     [SerializeField] float jumpPower = 20f;
     float Hit_timer = 0f;
     float Dead_timer = 0f;

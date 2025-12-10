@@ -23,7 +23,7 @@ public class FoodTory_Script : MonoBehaviour
     public int EndingCount = 0;
     public float Clear_timer = 0;
     public bool ChangeCount = true;
-    bool cleartimer = false;
+    public bool cleartimer = false;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +56,7 @@ public class FoodTory_Script : MonoBehaviour
         }
         Food_Maxup();
 
-        if(Input.GetKey(KeyCode.Tab))
+        if (Input.GetKey(KeyCode.Tab) && player.Dead_MoveLock == false && Clear_timer > 3f)
         {
             if (Input.GetKeyDown(KeyCode.C))
             {
@@ -99,7 +99,6 @@ public class FoodTory_Script : MonoBehaviour
             food1_Max = Random.Range(1, 6);
             food2_Max = Random.Range(1, 6);
             food3_Max = Random.Range(1, 6);
-            cleartimer = true;
             ChangeCount = false;
         }
     }

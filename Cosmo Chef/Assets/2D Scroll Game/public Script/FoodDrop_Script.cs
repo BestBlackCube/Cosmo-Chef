@@ -13,6 +13,8 @@ public class FoodDrop_Script : MonoBehaviour
     [SerializeField] GameObject[] drop_WidthObject;
     [SerializeField] GameObject[] drop_HeightObject;
 
+    [SerializeField] FoodTory_Script foodtory;
+
     [SerializeField] float drop_timer = 0;
     [SerializeField] float dropHeight_timer = 0;
     [SerializeField] float dropWidth_timer = 0;
@@ -86,17 +88,20 @@ public class FoodDrop_Script : MonoBehaviour
                 }
                 drop_timer = 0f;
             }
-            if (dropHeight_timer < 1f) dropHeight_timer += Time.deltaTime;
-            else
+            if(foodtory.EndingCount > 2)
             {
-                if (copyHeightCount > 9) copyHeightCount = 0;
+                if (dropHeight_timer < 1f) dropHeight_timer += Time.deltaTime;
+                else
+                {
+                    if (copyHeightCount > 9) copyHeightCount = 0;
 
-                int transformCount = Random.Range(-12, 13);
-                Vector3 Height_offset = new Vector3(transformCount, 8, 2);
-                if (drop_HeightObject[copyHeightCount] == null)
-                drop_HeightObject[copyHeightCount] = Instantiate(HitObject_prefab[0], Height_offset, Quaternion.identity);
-                copyHeightCount++;
-                dropHeight_timer = 0f;
+                    int transformCount = Random.Range(-12, 13);
+                    Vector3 Height_offset = new Vector3(transformCount, 8, 2);
+                    if (drop_HeightObject[copyHeightCount] == null)
+                        drop_HeightObject[copyHeightCount] = Instantiate(HitObject_prefab[0], Height_offset, Quaternion.identity);
+                    copyHeightCount++;
+                    dropHeight_timer = 0f;
+                }
             }
 
             if (dropWidth_timer < 1.5f) dropWidth_timer += Time.deltaTime;

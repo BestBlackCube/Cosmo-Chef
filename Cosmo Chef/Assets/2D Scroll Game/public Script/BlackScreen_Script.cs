@@ -69,7 +69,7 @@ public class BlackScreen_Script : MonoBehaviour
             }
             else
             {
-                if (foodtory.EndingCount >= 5) SceneManager.LoadScene("EndingScene");
+                if (foodtory.EndingCount >= 6) SceneManager.LoadScene("EndingScene");
                 if (delay_timer < 3f)
                 {
                     delay_timer += Time.deltaTime;
@@ -122,6 +122,7 @@ public class BlackScreen_Script : MonoBehaviour
                     CountDown.GetComponent<TextMeshProUGUI>().text = "START!";
                     foodtory.drop.dropFood = true;
                     foodtory.ChangeCount = true;
+                    foodtory.cleartimer = true;
                     player.Dead_MoveLock = false;
                     Textenabled = true;
                     Down = false;
