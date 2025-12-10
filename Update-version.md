@@ -1,9 +1,12 @@
 # Cosmos-Chef 클라이언트 개발 2.3.2v
 ## 기능 설명
-방해물 소환을 다음스테이지를 향해 갈 수록, 게임 난이도가 증가하는 시스템을 추가.
+방해물 소환을 다음스테이지를 향해 갈 수록, 게임 난이도가 증가하는 시스템을 추가.  
+일부 내부 값중 미초기화된 값 초기화 추가.
 
-- ## FoodDrop_Script.cs
-   - 1-3, 4-6 스테이지 2개로 나우어 1-3스테이지에서는 가로의 방해물만 나오게, 4-6스테이지에서는 가로, 세로에서 나오게 수정
+- ## 방해물
+   - ### [FoodDrop_Script.cs](https://github.com/BestBlackCube/Cosmo-Chef/blob/main/Cosmo%20Chef/Assets/2D%20Scroll%20Game/public%20Script/FoodDrop_Script.cs#L91-L118)
+      - 스테이지 6개로 구성되어있으며 1-3스테이지에서는 가로의 방해물만, 4-6스테이지에서 가로,  
+      세로에서 나오게 수정
 
 ## 버그 리포트
 
