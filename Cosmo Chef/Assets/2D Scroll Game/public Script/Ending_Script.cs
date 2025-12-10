@@ -8,6 +8,8 @@ public class Ending_Script : MonoBehaviour
     public bool EndingDoor = false;
     [SerializeField] FoodTory_Script foodtory;
     [SerializeField] BlackScreen_Script black;
+    [SerializeField] Player_Script player;
+    [SerializeField] GameObject Guide;
 
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -16,11 +18,13 @@ public class Ending_Script : MonoBehaviour
            col.gameObject.layer == LayerMask.NameToLayer("PlayerCheck"))
         {
             EndingDoor = true;
+            Guide.SetActive(true);
         }
     }
     void OnTriggerExit2D(Collider2D col)
     {
         EndingDoor = false;
+        Guide.SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -36,8 +40,24 @@ public class Ending_Script : MonoBehaviour
         {
             foodtory.stage_Panel.SetActive(false);
             foodtory.Clear_timer = 0f;
+            player.Dead_MoveLock = true;
             black.nextStage = true;
             this.gameObject.SetActive(false);
+        }
+    }
+    public void potal_transform(int Count)
+    {
+        if(Count <= 1)
+        {
+            this.transform.position = new Vector3(0, -0.1f, 4);
+        }
+        else if(1 < Count && Count <= 3)
+        {
+            this.transform.position = new Vector3(0, -3.7f, 4);
+        }
+        else if(3 < Count)
+        {
+            this.transform.position = new Vector3(0, -1.1f, 4);
         }
     }
 }

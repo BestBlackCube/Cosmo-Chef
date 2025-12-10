@@ -21,6 +21,7 @@ public class END_Script : MonoBehaviour
     {
         if (timer < 10f) timer += Time.deltaTime;
         else SceneManager.LoadScene("StartMenuScene");
+
         if (Input.GetKey(KeyCode.Escape))
         {
             Esc_timer += Time.deltaTime;

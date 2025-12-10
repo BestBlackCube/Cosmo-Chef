@@ -5,6 +5,7 @@ using UnityEngine;
 public class FoodTriggerBox_Script : MonoBehaviour
 {
     [SerializeField] FoodDrop_Script drop;
+    [SerializeField] FoodTory_Script foodtory;
 
     void OnTriggerStay2D(Collider2D col)
     {

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Spike_Script : MonoBehaviour
 {
+    Sound_Script sound;
     Player_Script player;
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -11,6 +12,7 @@ public class Spike_Script : MonoBehaviour
             col.gameObject.layer == LayerMask.NameToLayer("PlayerJump") ||
             col.gameObject.layer == LayerMask.NameToLayer("PlayerCheck"))
         {
+            sound.PlaySound(sound.audioClip[2]);
             player.PlayerHit = true;
             Destroy(this.gameObject);
         }
@@ -19,6 +21,7 @@ public class Spike_Script : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<Player_Script>();
+        sound = FindObjectOfType<Sound_Script>();
     }
 
     // Update is called once per frame

@@ -12,7 +12,10 @@ public class BlackScreen_Script : MonoBehaviour
     [SerializeField] GameObject CountDown;
     [SerializeField] GameObject KeyGuide;
     [SerializeField] FoodTory_Script foodtory;
+    [SerializeField] FoodDrop_Script drop;
+    [SerializeField] Ending_Script potal;
     [SerializeField] Player_Script player;
+    [SerializeField] GameObject playerObject;
 
     float Screen_timer = 0f;
     float timerCount = 3f;
@@ -39,6 +42,8 @@ public class BlackScreen_Script : MonoBehaviour
     {
         if(timer_lock == true)
         {
+            drop.ChangeTransform(foodtory.EndingCount);
+            potal.potal_transform(foodtory.EndingCount);
             if (Onedelay_timer < 3f) Onedelay_timer += Time.deltaTime;
             else
             {
@@ -69,6 +74,9 @@ public class BlackScreen_Script : MonoBehaviour
             }
             else
             {
+                playerObject.GetComponent<AudioSource>().enabled = false;
+                drop.ChangeTransform(foodtory.EndingCount);
+                potal.potal_transform(foodtory.EndingCount);
                 if (foodtory.EndingCount >= 6) SceneManager.LoadScene("EndingScene");
                 if (delay_timer < 3f)
                 {
@@ -120,6 +128,7 @@ public class BlackScreen_Script : MonoBehaviour
                 if (0f > timerCount)
                 {
                     CountDown.GetComponent<TextMeshProUGUI>().text = "START!";
+                    playerObject.GetComponent<AudioSource>().enabled = true;
                     foodtory.drop.dropFood = true;
                     foodtory.ChangeCount = true;
                     foodtory.cleartimer = true;

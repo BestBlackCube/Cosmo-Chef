@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Player_Script : MonoBehaviour
 {
+    [SerializeField] Sound_Script sound;
     [SerializeField] FoodDrop_Script drop;
     [SerializeField] Ending_Script door;
 
@@ -76,13 +77,14 @@ public class Player_Script : MonoBehaviour
         if (ObjectName == "GroundBottom" || ObjectName == "GroundTop")
         {
             ObjectName = "OutGround";
+            this.gameObject.layer = LayerMask.NameToLayer("PlayerJump");
         }
     }
     // Start is called before the first frame update
     void Start()
     {
         transform.rotation = Quaternion.Euler(0, 0, 0);
-        MaxHp = 50;
+        MaxHp = 250;
         nowHp = MaxHp;
     }
 
@@ -138,7 +140,7 @@ public class Player_Script : MonoBehaviour
                 }
                 animator.SetBool("Player_jump", false);
                 animator.SetBool("Player_jumpdown", true);
-                if(this.gameObject.layer == LayerMask.NameToLayer("PlayerJump") && ObjectName == "OutGround")
+                if (this.gameObject.layer == LayerMask.NameToLayer("PlayerJump") && ObjectName == "OutGround")
                 {
                     this.gameObject.layer = LayerMask.NameToLayer("PlayerCheck");
                 }
@@ -153,7 +155,6 @@ public class Player_Script : MonoBehaviour
                 animator.SetBool("Player_jump", false);
                 animator.SetBool("Player_jumpdown", false);
             }
-
             if (Input.GetKey(KeyCode.LeftArrow) && !LeftStart)
             {
                 Left = true;
@@ -208,6 +209,23 @@ public class Player_Script : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            if (rigid2D.velocity.y > -3.8)
+            {
+                rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
+            }
+            else
+            {
+                rigid2D.velocity = Vector2.zero;
+            }
+            transform.position = new Vector2(0, transform.position.y);
+            animator.SetBool("Player_idle", true);
+            animator.SetBool("Player_run", false);
+            animator.SetBool("Player_jump", false);
+            animator.SetBool("Player_jumpdown", false);
+            animator.SetBool("Player_hit", false);
+        }
     }
     void FixedUpdate()
     {
@@ -224,6 +242,7 @@ public class Player_Script : MonoBehaviour
 
         if (Jump == true)
         {
+            sound.PlaySound(sound.audioClip[0]);
             rigid2D.velocity = new Vector2(rigid2D.velocity.x, 0);
             rigid2D.AddForce(Vector2.up * jumpPower * jumpPower);
             JumpStart = true;

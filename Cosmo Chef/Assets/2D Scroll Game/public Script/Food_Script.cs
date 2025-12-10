@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Food_Script : MonoBehaviour
@@ -9,7 +10,9 @@ public class Food_Script : MonoBehaviour
     bool nameinput = false;
     float Destroy_timer = 0;
 
+    Sound_Script sound;
     FoodTory_Script food_tory;
+    Animator animator;
 
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -17,6 +20,7 @@ public class Food_Script : MonoBehaviour
            col.gameObject.layer == LayerMask.NameToLayer("PlayerJump") ||
            col.gameObject.layer == LayerMask.NameToLayer("PlayerCheck"))
         {
+            sound.PlaySound(sound.audioClip[1]);
             Object_name = this.gameObject.name;
             nameinput = true;
         }
@@ -26,6 +30,8 @@ public class Food_Script : MonoBehaviour
     void Start()
     {
         food_tory = FindObjectOfType<FoodTory_Script>();
+        sound = FindObjectOfType<Sound_Script>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -50,7 +56,11 @@ public class Food_Script : MonoBehaviour
             Object_name = "";
             Destroy(this.gameObject);
         }
-        if (Destroy_timer < 5f) Destroy_timer += Time.deltaTime;
+        if (Destroy_timer < 5f)
+        {
+            Destroy_timer += Time.deltaTime;
+            if (Destroy_timer > 3f && animator.GetBool("Flash") == false) animator.SetBool("Flash", true);
+        }
         else Destroy(this.gameObject);
     }
 }
