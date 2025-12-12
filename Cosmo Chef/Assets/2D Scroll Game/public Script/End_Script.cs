@@ -19,7 +19,7 @@ public class END_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timer < 10f) timer += Time.deltaTime;
+        if (timer < 30f) timer += Time.deltaTime;
         else SceneManager.LoadScene("StartMenuScene");
 
         if (Input.GetKey(KeyCode.Escape))

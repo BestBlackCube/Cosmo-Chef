@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using TreeEditor;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +20,10 @@ public class Player_Script : MonoBehaviour
     [SerializeField] Image Hpbar;
     [SerializeField] GameObject gameOver;
     [SerializeField] string ObjectName;
+
+    RaycastHit2D hit1;
+
+    public LayerMask hitLayer;
     
     bool Left = false;
     bool LeftStart = false;
@@ -38,46 +45,23 @@ public class Player_Script : MonoBehaviour
     float Hit_timer = 0f;
     float Dead_timer = 0f;
 
-    void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerStay2D(Collider2D col)
     {
-        if (col.gameObject.layer == LayerMask.NameToLayer("GroundTop") && this.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if(col.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-            if (animator.GetBool("Player_jumpdown") == true)
+            if (col.bounds.center.x != transform.position.x)
             {
-                animator.SetBool("Player_jumpdown", false);
+                Vector2 bounceDirection = new Vector2(col.transform.position.x - transform.position.x, 0).normalized;
+                transform.position += (Vector3)(bounceDirection * Time.deltaTime * 5f);
             }
         }
-        if (col.gameObject.layer == LayerMask.NameToLayer("GroundBottom"))
+        if(col.gameObject.layer == LayerMask.NameToLayer("WallTop"))
         {
-            if (animator.GetBool("Player_jumpdown") == true)
+            if (col.bounds.center.y != transform.position.y)
             {
-                animator.SetBool("Player_jumpdown", false);
+                Vector2 bounceDirection = new Vector2(0, col.transform.position.y - transform.position.y).normalized;
+                transform.position += (Vector3)(bounceDirection * Time.deltaTime * 5f);
             }
-        }
-    }
-    void OnTriggerStay2D(Collider2D col)
-    {
-        if (col.gameObject.layer == LayerMask.NameToLayer("GroundCheck") && this.gameObject.layer == LayerMask.NameToLayer("PlayerCheck"))
-        {
-            this.gameObject.layer = LayerMask.NameToLayer("Player");
-        }
-        if (col.gameObject.layer == LayerMask.NameToLayer("GroundTop"))
-        {
-            this.gameObject.layer = LayerMask.NameToLayer("Player");
-            ObjectName = "GroundTop";
-        }
-        if (col.gameObject.layer == LayerMask.NameToLayer("GroundBottom"))
-        {
-            this.gameObject.layer = LayerMask.NameToLayer("Player");
-            ObjectName = "GroundBottom";
-        }
-    }
-    void OnTriggerExit2D(Collider2D col)
-    {
-        if (ObjectName == "GroundBottom" || ObjectName == "GroundTop")
-        {
-            ObjectName = "OutGround";
-            this.gameObject.layer = LayerMask.NameToLayer("PlayerJump");
         }
     }
     // Start is called before the first frame update
@@ -91,7 +75,7 @@ public class Player_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.Tab))
+        if (Input.GetKey(KeyCode.Tab))
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -108,52 +92,89 @@ public class Player_Script : MonoBehaviour
         }
         if(Dead_MoveLock == false)
         {
-            switch(ObjectName)
+            if (this.gameObject.layer == LayerMask.NameToLayer("Player") ||
+                this.gameObject.layer == LayerMask.NameToLayer("PlayerCheck"))
             {
-                case "GroundBottom":
-                case "GroundTop":
-                    if (JumpStart == true)
-                    {
-                        JumpStart = false;
-                    }
-                    else
-                    {
-                        rigid2D.velocity = new Vector2(rigid2D.velocity.x, 0);
-                    }
-                    break;
-                default:
-                    rigid2D.velocity = new Vector2(rigid2D.velocity.x, rigid2D.velocity.y);
-                    break;
+                hit1 = Physics2D.BoxCast(new Vector2(transform.position.x + 0.1f, transform.position.y - 0.75f), new Vector2(0.2f, 0.15f),
+                    0, Vector2.down, 0.15f, hitLayer);
+
+                Debug.DrawRay(transform.position + new Vector3(-new Vector2(0.2f, 0.15f).x / 2, -0.75f), Vector2.down * 0.15f);
+                Debug.DrawRay(transform.position + new Vector3(new Vector2(0.2f, 0.15f).x / 2, -0.75f), Vector2.down * 0.15f);
             }
-            if(rigid2D.velocity.y > 0)
+            else hit1 = new RaycastHit2D();
+
+            if (hit1.collider != null)
             {
-                animator.SetBool("Player_idle", false);
-                animator.SetBool("Player_run", false);
-                animator.SetBool("Player_jump", true);
-                animator.SetBool("Player_jumpdown", false);
-            }
-            if(rigid2D.velocity.y < 0)
-            {
-                if(rigid2D.velocity.y < -7)
+                //Debug.Log(hit1.collider.gameObject.name);
+
+                if (hit1.collider.gameObject.name == "GroundUp")
                 {
-                    rigid2D.velocity = new Vector2(rigid2D.velocity.x, -7);
+                    //bottomBox2D.enabled = true;
+                    topBox2D.isTrigger = false;
+                    if (JumpStart && rigid2D.velocity.y > 0)
+                    {
+                        animator.SetBool("Player_idle", false);
+                        animator.SetBool("Player_run", false);
+                        animator.SetBool("Player_jump", true);
+                        animator.SetBool("Player_jumpdown", false);
+                    }
+                    if (rigid2D.velocity.y < 0)
+                    {
+                        if (rigid2D.velocity.y < -7)
+                        {
+                            rigid2D.velocity = new Vector2(rigid2D.velocity.x, -7);
+                        }
+                        animator.SetBool("Player_jump", false);
+                        animator.SetBool("Player_jumpdown", true);
+                        if (this.gameObject.layer == LayerMask.NameToLayer("PlayerJump") && ObjectName == "OutGround")
+                        {
+                            this.gameObject.layer = LayerMask.NameToLayer("PlayerCheck");
+                        }
+                    }
+
+                    if(rigid2D.velocity.y == 0) rigid2D.velocity = new Vector2(rigid2D.velocity.x, 0);
+                    this.gameObject.layer = LayerMask.NameToLayer("Player");
+                    if (animator.GetBool("Player_jumpdown"))
+                    {
+                        animator.SetBool("Player_jumpdown", false);
+                        if (JumpStart) JumpStart = false;
+                    }
                 }
-                animator.SetBool("Player_jump", false);
-                animator.SetBool("Player_jumpdown", true);
-                if (this.gameObject.layer == LayerMask.NameToLayer("PlayerJump") && ObjectName == "OutGround")
+                if (hit1.collider.gameObject.name == "BottomGround")
                 {
-                    this.gameObject.layer = LayerMask.NameToLayer("PlayerCheck");
+                    topBox2D.isTrigger = false;
+                    this.gameObject.layer = LayerMask.NameToLayer("Player");
+                    if (animator.GetBool("Player_jumpdown"))
+                    {
+                        animator.SetBool("Player_jumpdown", false);
+                        animator.SetBool("Player_idle", true);
+                        if (JumpStart) JumpStart = false;
+                    }
                 }
             }
-            if(rigid2D.velocity.y == 0 && ObjectName == "GroundBottom")
+            else
             {
-                animator.SetBool("Player_jump", false);
-                animator.SetBool("Player_jumpdown", false);
-            }
-            if (rigid2D.velocity.y == 0 && ObjectName == "GroundTop")
-            {
-                animator.SetBool("Player_jump", false);
-                animator.SetBool("Player_jumpdown", false);
+                topBox2D.isTrigger = true;
+                if (JumpStart && rigid2D.velocity.y > 0)
+                {
+                    animator.SetBool("Player_idle", false);
+                    animator.SetBool("Player_run", false);
+                    animator.SetBool("Player_jump", true);
+                    animator.SetBool("Player_jumpdown", false);
+                }
+                if (rigid2D.velocity.y < 0)
+                {
+                    if (rigid2D.velocity.y < -7)
+                    {
+                        rigid2D.velocity = new Vector2(rigid2D.velocity.x, -7);
+                    }
+                    animator.SetBool("Player_jump", false);
+                    animator.SetBool("Player_jumpdown", true);
+                    if (this.gameObject.layer == LayerMask.NameToLayer("PlayerJump") && ObjectName == "OutGround")
+                    {
+                        this.gameObject.layer = LayerMask.NameToLayer("PlayerCheck");
+                    }
+                }
             }
             if (Input.GetKey(KeyCode.LeftArrow) && !LeftStart)
             {
@@ -191,7 +212,7 @@ public class Player_Script : MonoBehaviour
 
             if (!Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
             {
-                if(JumpStart == false)
+                if (JumpStart == false)
                 {
                     animator.SetBool("Player_idle", true);
                     animator.SetBool("Player_jumpdown", false);
@@ -202,7 +223,8 @@ public class Player_Script : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space) && JumpStart == false)
             {
-                if(!door.EndingDoor == true)
+                hit1 = new RaycastHit2D();
+                if (!door.EndingDoor == true)
                 {
                     Jump = true;
                     this.gameObject.layer = LayerMask.NameToLayer("PlayerJump");
@@ -211,15 +233,11 @@ public class Player_Script : MonoBehaviour
         }
         else
         {
-            if (rigid2D.velocity.y > -3.8)
-            {
-                rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
-            }
-            else
-            {
-                rigid2D.velocity = Vector2.zero;
-            }
-            transform.position = new Vector2(0, transform.position.y);
+            if (JumpStart) JumpStart = false;
+            topBox2D.isTrigger = false;
+            rigid2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+            transform.position = new Vector2(transform.position.x, transform.position.y);
+            this.gameObject.layer = LayerMask.NameToLayer("Player");
             animator.SetBool("Player_idle", true);
             animator.SetBool("Player_run", false);
             animator.SetBool("Player_jump", false);
@@ -231,20 +249,20 @@ public class Player_Script : MonoBehaviour
     {
         if (Left == true)
         {
-            rigid2D.velocity = new Vector2(-5f, rigid2D.velocity.y);
+            rigid2D.velocity = new Vector2(-5, rigid2D.velocity.y);
             Right = false;
         }
         if (Right == true)
         {
-            rigid2D.velocity = new Vector2(5f, rigid2D.velocity.y);
+            rigid2D.velocity = new Vector2(5, rigid2D.velocity.y);
             Left = false;
         }
 
         if (Jump == true)
         {
             sound.PlaySound(sound.audioClip[0]);
-            rigid2D.velocity = new Vector2(rigid2D.velocity.x, 0);
-            rigid2D.AddForce(Vector2.up * jumpPower * jumpPower);
+            rigid2D.AddForce(Vector2.up * jumpPower * jumpPower, ForceMode2D.Impulse);
+            if (rigid2D.velocity.y > 8) rigid2D.velocity = new Vector2(rigid2D.velocity.x, 8);
             JumpStart = true;
             Jump = false;
         }

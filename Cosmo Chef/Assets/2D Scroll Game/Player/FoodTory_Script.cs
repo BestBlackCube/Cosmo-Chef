@@ -24,8 +24,11 @@ public class FoodTory_Script : MonoBehaviour
 
     public int EndingCount = 0;
     public float Clear_timer = 0;
-    public bool ChangeCount = true;
     public bool cleartimer = false;
+
+    public bool StartStage = false;
+    public bool reset = false;
+    public bool textColor = false;
 
     private RankData_JsonList RankDataList;
 
@@ -38,15 +41,30 @@ public class FoodTory_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MaxChange();
         food1.text = "" + food1_Count + "/" + food1_Max;
         food2.text = "" + food2_Count + "/" + food2_Max;
         food3.text = "" + food3_Count + "/" + food3_Max;
+        if(textColor)
+        {
+            float foodCount1 = Mathf.Abs(food1_Max - food1_Count) / (float)food1_Max;
+            float foodCount2 = Mathf.Abs(food2_Max - food2_Count) / (float)food2_Max;
+            float foodCount3 = Mathf.Abs(food3_Max - food3_Count) / (float)food3_Max;
+            if (foodCount1 < 0.2f) food1.color = Color.green;
+            else if (foodCount1 <= 0.5f) food1.color = Color.yellow;
+            else food1.color = food1.color = Color.Lerp(food1.color, Color.red, Time.deltaTime);
+            if (foodCount2 < 0.2f) food2.color = Color.green;
+            else if (foodCount2 <= 0.5f) food2.color = Color.yellow;
+            else food2.color = food2.color = Color.Lerp(food2.color, Color.red, Time.deltaTime);
+            if (foodCount3 < 0.2f) food3.color = Color.green;
+            else if (foodCount3 <= 0.5f) food3.color = Color.yellow;
+            else food3.color = food3.color = Color.Lerp(food3.color, Color.red, Time.deltaTime);
+        }
 
         if (cleartimer) Clear_timer += Time.deltaTime;
 
-        if(food1_Count == food1_Max && food2_Count == food2_Max && food3_Count == food3_Max)
+        if(food1_Count == food1_Max && food2_Count == food2_Max && food3_Count == food3_Max && StartStage)
         {
+            textColor = false;
             drop.dropFood = false;
             cleartimer = false;
             food1_Count = 0;
@@ -55,7 +73,7 @@ public class FoodTory_Script : MonoBehaviour
             EndingCount++;
             stage_Panel.SetActive(true);
             Door.SetActive(true);
-            stage_Panel.GetComponent<Stage_Script>().Stage_Text.text = "STAGE " + EndingCount + " CLEAR!";
+            stage_Panel.GetComponent<Stage_Script>().Stage_Text.text = "STAGE (" + EndingCount + "/6) CLEAR!";
             stage_Panel.GetComponent<Stage_Script>().Timer_Text.text = "CLEAR TIME: " + Mathf.Floor(Clear_timer * 1000) / 1000;
             if (EndingCount == 1)
             {
@@ -186,15 +204,42 @@ public class FoodTory_Script : MonoBehaviour
             food3_Count--;
         }
     }
-
-    void MaxChange()
+    public float food_timer = 0f;
+    public void MaxChange()
     {
-        if(ChangeCount == true)
+        if(reset) ResetCount();
+        if(food_timer < 5f)
         {
-            food1_Max = Random.Range(1, 6);
-            food2_Max = Random.Range(1, 6);
-            food3_Max = Random.Range(1, 6);
-            ChangeCount = false;
+            food_timer += Time.deltaTime;
+            if (0 <= food_timer && food_timer <= 1f)
+            {
+                food1_Max = Random.Range(1, 6);
+            }
+            if (1 <= food_timer && food_timer <= 2f)
+            {
+                food2_Max = Random.Range(1, 6);
+            }
+            if (2 <= food_timer && food_timer <= 3f)
+            {
+                food3_Max = Random.Range(1, 6);
+                StartStage = true;
+            }
         }
+    }
+    public void ResetCount()
+    {
+        food1_Count = 0;
+        food2_Count = 0;
+        food3_Count = 0;
+        food1_Max = 0;
+        food2_Max = 0;
+        food3_Max = 0;
+        reset = false;
+    }
+    public void TextWhite()
+    {
+        food1.color = Color.white;
+        food2.color = Color.white;
+        food3.color = Color.white;
     }
 }

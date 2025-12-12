@@ -40,6 +40,9 @@ public class Ending_Script : MonoBehaviour
         {
             foodtory.stage_Panel.SetActive(false);
             foodtory.Clear_timer = 0f;
+            foodtory.food_timer = 0f;
+            foodtory.StartStage = false;
+            foodtory.reset = true;
             player.Dead_MoveLock = true;
             black.nextStage = true;
             this.gameObject.SetActive(false);
