@@ -9,6 +9,7 @@ Cosmo Chef/[Uu]ser[Ss]ettings/
 Cosmo Chef/[Mm]emoryCaptures/
 Cosmo Chef/[Rr]ecordings/
 
+*.mp4
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #
